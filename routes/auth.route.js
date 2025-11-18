@@ -9,13 +9,21 @@ import bcrypt from "bcrypt";
 import { transporter } from "../nodemailer.js";
 import path from "path";
 import fs from "fs";
+import { fileURLToPath } from "url";
 
 export const router = express.Router();
+
+// ESM __dirname
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 /* ===========================================
    JWT SIGNER
 =========================================== */
 function signToken(id) {
+  if (!process.env.JWT_SECRET) {
+    throw new Error("JWT_SECRET is not set");
+  }
   return jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN || "7d",
   });
@@ -23,15 +31,16 @@ function signToken(id) {
 
 /* ===========================================
    MULTER STORAGE FOR USER DP
+   - Save into backend/Images/DP (matches index.js static path)
 =========================================== */
 const Storage = multer.diskStorage({
   destination: function (_req, _file, cb) {
-    const dest = path.join(process.cwd(), "Images", "DP");
+    const dest = path.join(__dirname, "..", "Images", "DP");
     fs.mkdirSync(dest, { recursive: true });
     cb(null, dest);
   },
   filename: function (_req, file, cb) {
-    const ext = path.extname(file.originalname) || ".png";
+    const ext = path.extname(file.originalname || "") || ".png";
     cb(null, `userprofile-${Date.now()}${ext}`);
   },
 });
@@ -125,6 +134,7 @@ router.post("/update_user_dp/:id", uploadDP.single("DP"), async (req, res) => {
         .send({ success: false, message: "No file uploaded" });
     }
 
+    // Relative path served by index.js as /Images/*
     const dpRelPath = path.posix.join("Images", "DP", req.file.filename);
 
     await UserModel.updateOne(

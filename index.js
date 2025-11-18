@@ -38,19 +38,14 @@ ensureDir(AADHAAR_DIR);
 ensureDir(DP_DIR);
 
 // ---------------------------
-/* CORS CONFIG (Express 5 compatible)
-   Note: app.options("(.*)", ...) is required instead of "*"
-*/
+/* CORS CONFIG (Express 5 compatible) */
 // ---------------------------
 const corsOptions = {
   origin: [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
-    // LIVE frontend
     "https://rapspowerplay.com",
     "https://www.rapspowerplay.com",
-
-    // Backend URL on Render (if needed)
     "https://my-app-backend-2rt2.onrender.com",
   ],
   credentials: true,
@@ -59,10 +54,9 @@ const corsOptions = {
   optionsSuccessStatus: 204,
 };
 
-// CORS middleware
 app.use(cors(corsOptions));
-// Preflight fix (Express 5): use "(.*)" instead of "*"
-app.options("(.*)", cors(corsOptions));
+// IMPORTANT: use a RegExp for Express 5 (path-to-regexp v6)
+app.options(/.*/, cors(corsOptions));
 
 // Body parser
 app.use(express.json());
