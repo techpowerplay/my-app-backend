@@ -45,8 +45,12 @@ app.use(
     origin: [
       "http://localhost:5173",
       "http://127.0.0.1:5173",
+      // Your LIVE frontend
       "https://rapspowerplay.com",
       "https://www.rapspowerplay.com",
+
+      // Your backend URL on Render
+      "https://my-app-backend-2rt2.onrender.com",
     ],
     credentials: true,
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
