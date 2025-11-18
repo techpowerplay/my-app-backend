@@ -1,10 +1,18 @@
 {
-  "name": "raps-backend",
+  "name": "backend",
   "version": "1.0.0",
+  "description": "",
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "engines": {
+    "node": ">=18"
   },
   "dependencies": {
     "bcrypt": "^6.0.0",
@@ -17,6 +25,6 @@
     "mongoose": "^8.17.1",
     "multer": "^2.0.2",
     "nodemailer": "^7.0.6",
-    "validator": "^13.15.0"
+    "validator": "^13.15.15"
   }
 }
