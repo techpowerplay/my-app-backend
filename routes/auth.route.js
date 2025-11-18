@@ -2,7 +2,7 @@
 
 import express from "express";
 import jwt from "jsonwebtoken";
-import { UserModel } from "../models/User.js"; // fixed casing to ensure Linux compatibility
+import { UserModel } from "../models/user.js"; // fixed casing to ensure Linux compatibility
 import { auth } from "../middleware/auth.middleware.js";
 import multer from "multer";
 import bcrypt from "bcrypt";
