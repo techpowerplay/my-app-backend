@@ -50,7 +50,7 @@ app.use(
       "https://www.rapspowerplay.com",
 
       // Your backend URL on Render
-      "https://my-app-backend-2rt2.onrender.com",
+      "https://my-app-backend-2rt2.onrender.com"
     ],
     credentials: true,
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
