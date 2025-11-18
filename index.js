@@ -4,7 +4,7 @@ import express from "express";
 import cors from "cors";
 import { google } from "googleapis";
 import dotenv from "dotenv";
-import { BookingModel } from "./models/Booking.js";
+import { BookingModel } from "./models/booking.js";
 import { router } from "./routes/auth.route.js";
 import { DBconnect } from "./config/DBconnect.js";
 import multer from "multer";
