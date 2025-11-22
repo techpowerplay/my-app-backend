@@ -38,7 +38,7 @@ ensureDir(AADHAAR_DIR);
 ensureDir(DP_DIR);
 
 // ---------------------------
-/* CORS CONFIG (Express 5 compatible) */
+// CORS CONFIG (Express 5 compatible)
 // ---------------------------
 const corsOptions = {
   origin: [
@@ -55,7 +55,6 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-// IMPORTANT: use a RegExp for Express 5 (path-to-regexp v6)
 app.options(/.*/, cors(corsOptions));
 
 // Body parser
@@ -103,7 +102,6 @@ async function appendToSheet(data) {
     range: headerRange,
   });
 
-  // Add header row if empty
   if (!existing.data.values || existing.data.values.length === 0) {
     await sheets.spreadsheets.values.update({
       spreadsheetId: SPREADSHEET_ID,
@@ -113,7 +111,6 @@ async function appendToSheet(data) {
     });
   }
 
-  // Append data row
   await sheets.spreadsheets.values.append({
     spreadsheetId: SPREADSHEET_ID,
     range: `${SHEET_NAME}!A1`,
@@ -159,6 +156,17 @@ app.post("/enquiry", async (req, res) => {
 app.get("/api/health", (req, res) => {
   res.json({ ok: true });
 });
+
+/* ------------------------------------------------------------------
+   🔥 KEEP-ALIVE SELF PING (METHOD 1 — recommended)
+------------------------------------------------------------------ */
+if (process.env.RENDER_EXTERNAL_URL) {
+  setInterval(() => {
+    fetch(`${process.env.RENDER_EXTERNAL_URL}/api/health`)
+      .then(() => console.log("🔥 Self-ping OK"))
+      .catch(() => console.log("⚠️ Keep-alive ping failed"));
+  }, 4 * 60 * 1000); // every 4 minutes
+}
 
 // ---------------------------
 // PRICING TABLES
@@ -411,7 +419,7 @@ app.get("/api/bookings/:id", async (req, res, next) => {
 });
 
 // ---------------------------
-// USER AUTH ROUTES (important)
+// USER AUTH ROUTES
 // ---------------------------
 app.use("/user", router);
 
